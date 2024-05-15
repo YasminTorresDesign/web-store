@@ -14,6 +14,7 @@ public class DetalleOrden {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String imagen;
 	private String nombre;
 	private double cantidad;
 	private double precio;
@@ -28,13 +29,23 @@ public class DetalleOrden {
 	public DetalleOrden() {
 	}
 
-	public DetalleOrden(Integer id, String nombre, double cantidad, double precio, double total) {
+	public DetalleOrden(Integer id, String imagen, String nombre,double cantidad, double precio, double total) {
 		super();
 		this.id = id;
+		this.imagen = imagen;
 		this.nombre = nombre;
+		this.cantidad = cantidad;
 		this.cantidad = cantidad;
 		this.precio = precio;
 		this.total = total;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
 
 	public Integer getId() {
@@ -95,9 +106,11 @@ public class DetalleOrden {
 	
 	@Override
 	public String toString() {
-		return "DetalleOrden [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+		return "DetalleOrden [id=" + id + ", imagen=" + imagen + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", total=" + total + "]";
 	}
+
+	
 	
 	
 
