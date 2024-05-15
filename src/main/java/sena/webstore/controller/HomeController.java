@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import sena.webstore.model.DetalleOrden;
 import sena.webstore.model.Orden;
 import sena.webstore.model.Producto;
@@ -72,13 +73,14 @@ public class HomeController {
         detalleOrden.setTotal(producto.getPrecio()*cantidad);
         detalleOrden.setProducto(producto);
 
-        //validar que le producto no se añada 2 veces
-		//Integer idProducto=producto.getId();
-		//boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
+        //validar que el producto no se añada 2 veces
+		Integer idProducto=producto.getId();
+		boolean ingresado=detalles.stream()
+            .anyMatch(p -> p.getProducto().getId()==idProducto);
 		
-		// if (!ingresado) {
+		if (!ingresado) {
 		detalles.add(detalleOrden);
-		// }
+		}
 		
 		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
@@ -113,6 +115,17 @@ public class HomeController {
 		model.addAttribute("orden", orden);
 
 		return "usuario/carrito";
+	}
+
+    @GetMapping("/getCart")
+	public String getCart(Model model, HttpSession session) {
+		
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		
+		//sesion
+		//model.addAttribute("sesion", session.getAttribute("idusuario"));
+		return "/usuario/carrito";
 	}
 	
 
