@@ -19,6 +19,8 @@ import jakarta.servlet.http.HttpSession;
 import sena.webstore.model.DetalleOrden;
 import sena.webstore.model.Orden;
 import sena.webstore.model.Producto;
+import sena.webstore.model.Usuario;
+import sena.webstore.service.IUsuarioService;
 import sena.webstore.service.ProductoService;
 
 @Controller
@@ -29,6 +31,10 @@ public class HomeController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
+
 
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -126,6 +132,19 @@ public class HomeController {
 		//sesion
 		//model.addAttribute("sesion", session.getAttribute("idusuario"));
 		return "/usuario/carrito";
+	}
+
+    @GetMapping("/order")
+	public String order(Model model, HttpSession session) {
+		
+		// Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+		Usuario usuario = usuarioService.findById(1).get();
+		
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		model.addAttribute("usuario", usuario);
+		
+		return "usuario/resumenorden";
 	}
 	
 
