@@ -7,5 +7,5 @@ import sena.webstore.model.Orden;
 
 @Repository
 public interface IOrdenRepository extends JpaRepository<Orden, Integer>{
-
+    //List<Orden> findByUsuario (Usuario usuario);
 }

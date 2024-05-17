@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import sena.webstore.model.Producto;
 import sena.webstore.model.Usuario;
+import sena.webstore.service.IUsuarioService;
 import sena.webstore.service.ProductoService;
 import sena.webstore.service.UploadFileService;
 
@@ -28,6 +30,9 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
+
+	@Autowired
+	private IUsuarioService usuarioService;
 
     @Autowired
     private UploadFileService upload;
@@ -44,10 +49,10 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto, @RequestParam("img") MultipartFile file) throws IOException{
+    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException{
         LOGGER.info("Este es el objeto producto {}", producto);
-        Usuario u = new Usuario(1,"","","","","","","");
-        producto.setUsuario(u);
+		Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
+	    producto.setUsuario(u);
 
         //imagen
 		if (producto.getId()==null) { // cuando se crea un producto
