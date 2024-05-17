@@ -1,5 +1,7 @@
 package sena.webstore.controller;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpSession;
 import sena.webstore.model.Usuario;
 import sena.webstore.service.IUsuarioService;
 
@@ -33,6 +36,7 @@ public class UsuarioController {
 		return "usuario/registro";
 	}
 	
+    //guardar usuario
 	@PostMapping("/save")
 	public String save(Usuario usuario) {
 		logger.info("Usuario registro: {}", usuario);
@@ -41,33 +45,34 @@ public class UsuarioController {
 		usuarioService.save(usuario);		
 		return "redirect:/";
 	}
+	//mostrar vista login
+	@GetMapping("/login")
+	public String login() {
+		return "usuario/login";
+	}
 	
-	// @GetMapping("/login")
-	// public String login() {
-	// 	return "usuario/login";
-	// }
-	
-	// @PostMapping("/acceder")
-	// public String acceder(Usuario usuario, HttpSession session) {
-	// 	logger.info("Accesos : {}", usuario);
+    //acceso de usuario admin o user
+	@PostMapping("/acceder")
+	public String acceder(Usuario usuario, HttpSession session) {
+		logger.info("Accesos : {}", usuario);
 		
-	// 	Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
-	// 	//logger.info("Usuario de db: {}", user.get());
+		Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
+		//logger.info("Usuario de db: {}", user.get());
 		
-	// 	if (user.isPresent()) {
-	// 		session.setAttribute("idusuario", user.get().getId());
+		if (user.isPresent()) {
+			session.setAttribute("idusuario", user.get().getId());
 			
-	// 		if (user.get().getTipo().equals("ADMIN")) {
-	// 			return "redirect:/administrador";
-	// 		}else {
-	// 			return "redirect:/";
-	// 		}
-	// 	}else {
-	// 		logger.info("Usuario no existe");
-	// 	}
+			if (user.get().getTipo().equals("ADMIN")) {
+				return "redirect:/administrador";
+			}else {
+				return "redirect:/";
+			}
+		}else {
+			logger.info("Usuario no existe");
+		}
 		
-	// 	return "redirect:/";
-	// }
+		return "redirect:/";
+	}
 	
 	// @GetMapping("/compras")
 	// public String obtenerCompras(Model model, HttpSession session) {
