@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sena.webstore.model.Producto;
+import sena.webstore.service.IUsuarioService;
 import sena.webstore.service.ProductoService;
 
 @Controller
@@ -18,6 +19,9 @@ public class AdministradorController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private IUsuarioService usuarioService;
+
     @GetMapping("")
     public String home(Model model) {
 
@@ -26,5 +30,19 @@ public class AdministradorController {
 
         return "administrador/home";
     }
+
+    @GetMapping("/usuarios")
+	public String usuarios(Model model) {
+		model.addAttribute("usuarios", usuarioService.findAll());
+		return "administrador/usuarios";
+	}
+	
+	// @GetMapping("/ordenes")
+	// public String ordenes(Model model) {
+	// 	model.addAttribute("ordenes", ordensService.findAll());
+	// 	return "administrador/ordenes";
+	// }
+	
+	// 
 
 }

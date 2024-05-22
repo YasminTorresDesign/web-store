@@ -1,5 +1,6 @@
 package sena.webstore.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		return usuarioRepository.findByEmail(email);
 	}
 
-	// @Override
-	// public List<Usuario> findAll() {
-	// 	return usuarioRepository.findAll();
-	// }
+	@Override
+	public List<Usuario> findAll() {
+		return usuarioRepository.findAll();
+	}
 
 }
