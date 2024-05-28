@@ -85,23 +85,47 @@ public class HomeController {
         log.info("Cantidad: {}", cantidad);
         producto = optionalProducto.get();
 
-        
-        detalleOrden.setCantidad(cantidad);
-        detalleOrden.setPrecio(producto.getPrecio());
-        detalleOrden.setNombre(producto.getNombre());
-        detalleOrden.setImagen(producto.getImagen());
-        detalleOrden.setTotal(producto.getPrecio()*cantidad);
-        detalleOrden.setProducto(producto);
-
-        //validar que el producto no se añada 2 veces
-		Integer idProducto=producto.getId();
-		boolean ingresado=detalles.stream()
-            .anyMatch(p -> p.getProducto().getId()==idProducto);
-		
-		if (!ingresado) {
-		detalles.add(detalleOrden);
+		// Buscar si el producto ya está en el carrito
+		boolean productoExistente = false;
+		for (DetalleOrden detalle : detalles) {
+			if (detalle.getProducto().getId().equals(producto.getId())) {
+				// Si el producto ya está en el carrito, actualiza la cantidad y el total
+				detalle.setCantidad(detalle.getCantidad() + cantidad);
+				detalle.setTotal(detalle.getTotal() + (producto.getPrecio() * cantidad));
+				productoExistente = true;
+				break;
+			}
 		}
+	
+		if (!productoExistente) {
+			// Si el producto no está en el carrito, añádelo como un nuevo detalle
+			detalleOrden.setCantidad(cantidad);
+			detalleOrden.setPrecio(producto.getPrecio());
+			detalleOrden.setNombre(producto.getNombre());
+			detalleOrden.setImagen(producto.getImagen());
+			detalleOrden.setTotal(producto.getPrecio() * cantidad);
+			detalleOrden.setProducto(producto);
+	
+			detalles.add(detalleOrden);
+		}
+
+        
+        // detalleOrden.setCantidad(cantidad);
+        // detalleOrden.setPrecio(producto.getPrecio());
+        // detalleOrden.setNombre(producto.getNombre());
+        // detalleOrden.setImagen(producto.getImagen());
+        // detalleOrden.setTotal(producto.getPrecio()*cantidad);
+        // detalleOrden.setProducto(producto);
+
+        // //validar que el producto no se añada 2 veces
+		// Integer idProducto=producto.getId();
+		// boolean ingresado=detalles.stream()
+        //     .anyMatch(p -> p.getProducto().getId()==idProducto);
 		
+		// if (!ingresado) {
+		// detalles.add(detalleOrden);
+		// }
+
 		// Calcular el total de la orden
 		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
