@@ -102,6 +102,7 @@ public class HomeController {
 		detalles.add(detalleOrden);
 		}
 		
+		// Calcular el total de la orden
 		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
 		orden.setTotal(sumaTotal);
@@ -150,7 +151,14 @@ public class HomeController {
 
     @GetMapping("/order")
 	public String order(Model model, HttpSession session) {
-		
+
+		// Verificar si el usuario ha iniciado sesión
+        Object usuarioId = session.getAttribute("idusuario");
+        if (usuarioId == null) {
+            // Redirigir a la página principal si no ha iniciado sesión
+            return "redirect:/";
+        }
+
 		Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 		// Usuario usuario = usuarioService.findById(1).get();
 		
