@@ -17,6 +17,49 @@
 <!-- Custom styles for this template -->
 <link th:href="@{css/heroic-features.css}" rel="stylesheet">
 
+<style>
+	.background-image {
+		background-image: url('images/greenpeace_office_3.jpg'); /* Ruta de tu imagen */
+		background-size: cover;
+		background-position: center;
+		height: 500px; /* Ajusta la altura según tus necesidades */
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 1rem; /* Añade un margen inferior para separar del contenido siguiente */
+		position: relative; /* Necesario para el overlay */
+	}
+
+	.background-image::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5); /* Color de fondo con transparencia */
+		z-index: 1; /* Coloca el overlay debajo del contenido */
+	}
+
+	.background-image h1 {
+		position: relative;
+		color: white; /* Color del texto */
+		z-index: 2; /* Coloca el texto encima del overlay */
+	}
+
+	.background-content {
+            position: relative;
+            z-index: 2; /* Coloca el texto encima del overlay */
+            color: white; /* Color del texto */
+            text-align: center; /* Centra el texto */
+        }
+
+	.color-white {
+            color: white;
+	}
+</style>
+
 </head>
 
 <body>
@@ -24,21 +67,29 @@
 	<!-- Navigation -->
 	<!-- <div th:include="usuario/template_usuario.html::header"></div> -->
 	
-	<div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}">	
-	</div>
-	
+	<div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}"> </div>
+
 	<div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"> </div>
+
+	
 
 	<!-- Page Content -->
 	<div class="container">
 
-		<!-- Jumbotron Header -->
-		<header class="jumbotron my-4">
-			<h1 class="display-3">Bienvenido a Tu_<span style="color: green">Mueble </span></h1>
-			<p class="lead">Descarga, Imprime y construye tus propios muebles</p>
-		</header>
-
 		
+
+		<div class="background-image">
+			
+
+			<!-- Jumbotron Header -->
+			<header class="jumbotron my-4 ">
+				<p class="lead font-weight-bold background-content" style="color: #83b735; font-size: 42px">Convierte Tus Ideas En Realidad</p>
+
+				<h1 class="display-3">Bienvenido a Tu_<span style="color: #83b735">Mueble </span></h1>
+				<p class="lead font-weight-bold background-content">Descarga, Imprime y Construye Tus Propios Muebles Personalizados</p>
+			</header>
+
+		</div>
 
 		<!-- Page Features -->
 		<div class="row text-center">
